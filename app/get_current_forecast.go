@@ -3,17 +3,9 @@ package app
 import (
 	"encoding/json"
 	owm "github.com/briandowns/openweathermap"
-	"log"
 	"net/http"
 	"os"
 )
-
-func handleError(w http.ResponseWriter, err error) {
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		log.Fatal(err)
-	}
-}
 
 func GetCurrentForecast(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -27,15 +19,27 @@ func GetCurrentForecast(w http.ResponseWriter, r *http.Request) {
 
 	apiKey := os.Getenv("OPENWEATHER_API_KEY")
 	weather, err := owm.NewCurrent("C", "EN", apiKey)
-	handleError(w, err)
+	if err != nil {
+		handleError(w, err)
+		return
+	}
 
 	err = weather.CurrentByName(city)
-	handleError(w, err)
+	if err != nil {
+		handleError(w, err)
+		return
+	}
 
 	forecast := Forecast{city, "celsius", weather.Main.Temp}
 	out, err := json.Marshal(forecast)
-	handleError(w, err)
+	if err != nil {
+		handleError(w, err)
+		return
+	}
 
 	_, err = w.Write(out)
-	handleError(w, err)
+	if err != nil {
+		handleError(w, err)
+		return
+	}
 }

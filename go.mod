@@ -2,4 +2,7 @@ module highload-hw
 
 go 1.15
 
-require github.com/briandowns/openweathermap v0.16.0
+require (
+	github.com/briandowns/openweathermap v0.16.0
+	github.com/tidwall/gjson v1.6.1
+)
