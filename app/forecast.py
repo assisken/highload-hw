@@ -7,13 +7,13 @@ import requests
 from app.models import Forecast, Unit
 
 API_URL = "https://api.openweathermap.org/data/2.5/forecast"
-APP_ID = os.getenv("APP_ID")
+API_KEY = os.getenv("API_KEY")
 
 
 def retrieve_forecast(
     city: str, timestamp: datetime, units: Unit = Unit.CELSIUS
 ) -> Forecast:
-    query = {"appid": APP_ID, "q": city, "units": units.value}
+    query = {"appid": API_KEY, "q": city, "units": units.value}
     resp = requests.get(f"{API_URL}?{urlencode(query)}")
 
     if resp.status_code != 200:
