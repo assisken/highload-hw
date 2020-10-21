@@ -20,7 +20,6 @@ def retrieve_forecast(
         raise ValueError(f"Code is {resp.status_code}:\n{resp.content}")
 
     data = resp.json()
-    print(data)
     temp = None
     for time in data["list"]:
         if time["dt"] == timestamp.timestamp():
